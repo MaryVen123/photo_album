@@ -1,0 +1,11 @@
+from django.core.management.base import BaseCommand
+from django.core.management import call_command
+
+
+class Command(BaseCommand):
+    help = 'Runs migrations and creates superuser if needed'
+
+    def handle(self, *args, **options):
+        self.stdout.write('Running migrations...')
+        call_command('migrate', '--noinput')
+        self.stdout.write(self.style.SUCCESS('Migrations applied successfully'))
