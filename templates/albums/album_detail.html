@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.title }} | Photo Album{% endblock %}
+{% block content %}
+  <section class="detail-hero">
+    <div>
+      <p class="eyebrow">Album detail</p>
+      <h1>{{ object.title }}</h1>
+      <p>{{ object.description|default:'No description added yet.' }}</p>
+      <div class="meta-row">
+        <span>Owner: {{ object.owner.username }}</span>
+        <span>{{ object.photos.count }} photos</span>
+        <span>{% if object.is_public %}Public{% else %}Private{% endif %}</span>
+      </div>
+    </div>
+    <div class="action-stack">
+      <a class="primary-button" href="{% url 'albums:photo-create' %}?album={{ object.pk }}">Add Photo</a>
+      {% if object.owner == user or user.is_staff %}
+        <a class="secondary-button" href="{% url 'albums:album-update' object.pk %}">Edit</a>
+        <a class="danger-button" href="{% url 'albums:album-delete' object.pk %}">Delete</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="grid-section">
+    <div class="section-heading">
+      <h2>Photos</h2>
+      <span>Cloudinary-powered media</span>
+    </div>
+
+    <div class="photo-grid">
+      {% for photo in object.photos.all %}
+        <article class="photo-card">
+          <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" />
+          <div class="photo-card-body">
+            <p>{{ photo.caption|default:'Untitled photo' }}</p>
+            <div class="photo-card-actions">
+              <small>{{ photo.uploaded_at|date:'M d, Y' }}</small>
+              {% if photo.album.owner == user or user.is_staff %}
+                <a href="{% url 'albums:photo-delete' photo.pk %}">Delete</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+      {% empty %}
+        <div class="empty-state">
+          <h3>No photos yet</h3>
+          <p>Add your first image to bring this album to life.</p>
+          <a class="primary-button" href="{% url 'albums:photo-create' %}?album={{ object.pk }}">Upload photo</a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

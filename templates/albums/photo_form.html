@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Upload Photo | Photo Album{% endblock %}
+{% block content %}
+  <section class="form-shell">
+    <div class="section-heading">
+      <h1>Upload Photo</h1>
+      <span>Cloudinary handles the media storage</span>
+    </div>
+    <form class="glass-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button class="primary-button" type="submit">Upload photo</button>
+        <a class="secondary-button" href="{% url 'albums:album-list' %}">Cancel</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}

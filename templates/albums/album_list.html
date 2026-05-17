@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Albums | Photo Album{% endblock %}
+{% block content %}
+  <section class="hero-card">
+    <div>
+      <p class="eyebrow">Your gallery</p>
+      <h1>Albums that feel alive.</h1>
+      <p>Organize your photos into bold, colorful collections and open each moment in a polished view.</p>
+    </div>
+    <a class="primary-button" href="{% url 'albums:album-create' %}">Create new album</a>
+  </section>
+
+  <section class="grid-section">
+    <div class="section-heading">
+      <h2>Albums</h2>
+      <span>{{ object_list|length }} total</span>
+    </div>
+
+    <div class="album-grid">
+      {% for album in object_list %}
+        <a class="album-card" href="{% url 'albums:album-detail' album.pk %}">
+          <div class="album-card-top">
+            <span class="album-badge">Album</span>
+            {% if album.owner == user %}<span class="album-owner">Your album</span>{% endif %}
+          </div>
+          <h3>{{ album.title }}</h3>
+          <p>{{ album.description|default:'No description added yet.'|truncatechars:120 }}</p>
+          <div class="album-card-bottom">
+            <span>{{ album.photos.count }} photos</span>
+            <span>Open</span>
+          </div>
+        </a>
+      {% empty %}
+        <div class="empty-state">
+          <h3>No albums yet</h3>
+          <p>Create the first album to start building your collection.</p>
+          <a class="primary-button" href="{% url 'albums:album-create' %}">Create album</a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Delete Photo | Photo Album{% endblock %}
+{% block content %}
+  <section class="form-shell danger-shell">
+    <p class="eyebrow">Danger zone</p>
+    <h1>Delete photo</h1>
+    <p>Are you sure you want to remove this photo from <strong>{{ object.album.title }}</strong>?</p>
+    <form class="form-actions" method="post">{% csrf_token %}
+      <button class="danger-button" type="submit">Delete photo</button>
+      <a class="secondary-button" href="{{ object.album.get_absolute_url }}">Cancel</a>
+    </form>
+  </section>
+{% endblock %}

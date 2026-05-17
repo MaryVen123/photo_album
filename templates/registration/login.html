@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Sign in | Photo Album{% endblock %}
+{% block content %}
+  <section class="login-layout">
+    <div class="login-panel intro-panel">
+      <p class="eyebrow">Welcome back</p>
+      <h1>Sign in to your album workspace</h1>
+      <p>Manage albums, upload photos, and keep your gallery organized in a bright, modern dashboard.</p>
+      <div class="login-stats">
+        <div><strong>Cloudinary</strong><span>Media-ready</span></div>
+        <div><strong>RBAC</strong><span>Owner + admin</span></div>
+        <div><strong>CBVs</strong><span>Clean CRUD</span></div>
+      </div>
+    </div>
+
+    <div class="login-panel auth-panel">
+      <div class="section-heading">
+        <h2>Log in</h2>
+        <span>Use your admin account or album owner account</span>
+      </div>
+      {% if form.errors %}
+        <div class="message message-error">Invalid username or password.</div>
+      {% endif %}
+      <form class="glass-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <button class="primary-button" type="submit">Sign in</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}

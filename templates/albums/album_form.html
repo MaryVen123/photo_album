@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{% if object %}Edit Album{% else %}Create Album{% endif %} | Photo Album{% endblock %}
+{% block content %}
+  <section class="form-shell">
+    <div class="section-heading">
+      <h1>{% if object %}Edit{% else %}Create{% endif %} Album</h1>
+      <span>Build the collection card by card</span>
+    </div>
+    <form class="glass-form" method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button class="primary-button" type="submit">Save album</button>
+        <a class="secondary-button" href="{% url 'albums:album-list' %}">Cancel</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}
