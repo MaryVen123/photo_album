@@ -17,4 +17,4 @@ class AlbumsConfig(AppConfig):
             except Exception as e:
                 print(f'Superuser creation skipped: {e}')
         
-        post_migrate.connect(create_default_superuser, sender=self)
+        post_migrate.connect(create_default_superuser)
