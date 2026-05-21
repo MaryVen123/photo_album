@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
+from django.forms import ClearableFileInput
 from .models import Photo, Album
 
 
@@ -8,7 +9,8 @@ class PhotoForm(forms.ModelForm):
     image = forms.FileField(
         validators=[
             FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff'])
-        ]
+        ],
+        widget=ClearableFileInput(attrs={'accept': 'image/*'})
     )
 
     class Meta:
