@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 from .models import Album, Photo
-from .forms import PhotoForm, AlbumForm
+from .forms import PhotoForm, AlbumForm, SignUpForm
 
 
 class AlbumListView(LoginRequiredMixin, ListView):
@@ -87,3 +87,14 @@ class PhotoDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return self.object.album.get_absolute_url()
+
+
+class SignUpView(CreateView):
+    form_class = SignUpForm
+    template_name = 'registration/signup.html'
+    success_url = reverse_lazy('albums:album-list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('albums:album-list')
+        return super().dispatch(request, *args, **kwargs)
